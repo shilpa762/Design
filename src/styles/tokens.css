@@ -1,0 +1,44 @@
+/*
+ * BlockSurvey tokens used by the cancellation flow.
+ *
+ * There is no design-system.md or token file in this repo yet, so every value
+ * below is lifted 1:1 from the Figma reference frames (new cancel pop-up 1:3 and
+ * "What You Lose" card 1:254). No colours or fonts beyond those frames are
+ * introduced. See docs/cancellation-flow.md for the Figma -> token map.
+ */
+:root {
+  /* Colour */
+  --bs-color-ink: #171717;
+  --bs-color-black: #000000;
+  --bs-color-white: #ffffff;
+  --bs-color-text-secondary: #5f5f5c;
+  --bs-color-accent: #ff4433;
+  --bs-color-accent-strong: rgb(255, 45, 23);
+  --bs-color-banner-bg: #ffe9e7;
+  --bs-color-card-border: #ece7fe;
+  --bs-color-divider: rgba(23, 23, 23, 0.2);
+  --bs-color-border-strong: rgba(23, 23, 23, 0.4);
+  --bs-color-border-close: rgba(23, 23, 23, 0.5);
+  --bs-color-overlay: rgba(23, 23, 23, 0.4);
+
+  /* Type */
+  --bs-font-ui: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --bs-font-table: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --bs-font-symbol: 'Manrope', 'Segoe UI', system-ui, sans-serif;
+
+  /* Radius */
+  --bs-radius-modal: 6px;
+  --bs-radius-panel: 4.8px;
+  --bs-radius-sm: 8px;
+  --bs-radius-button: 12px;
+  --bs-radius-banner: 16px;
+  --bs-radius-card: 20px;
+  --bs-radius-round: 26px;
+
+  /* Elevation */
+  --bs-shadow-card: 0 10px 10px rgba(0, 0, 0, 0.2);
+
+  /* Tinted illustration panel (Figma "Rectangle 3814") */
+  --bs-gradient-panel: linear-gradient(180deg, rgba(255, 255, 255, 0.051) 67.16%, var(--bs-color-accent-strong) 443.2%),
+    var(--bs-color-white);
+}

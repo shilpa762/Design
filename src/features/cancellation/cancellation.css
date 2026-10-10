@@ -1,0 +1,647 @@
+/*
+ * Cancellation modal. Measurements come from Figma node 1:3 (new cancel pop-up)
+ * and 1:254 ("What You Lose" card). Only tokens from src/styles/tokens.css are used.
+ */
+
+.cf-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: var(--bs-color-overlay);
+  font-family: var(--bs-font-ui);
+  color: var(--bs-color-ink);
+}
+
+.cf-overlay *,
+.cf-overlay *::before,
+.cf-overlay *::after {
+  box-sizing: border-box;
+}
+
+/* Shell: 1138 x 922, 6px radius, content column + 439px tinted panel */
+.cf-modal {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 439px;
+  width: min(1138px, 100%);
+  height: min(922px, 100%);
+  background: var(--bs-color-white);
+  border-radius: var(--bs-radius-modal);
+  overflow: hidden;
+}
+
+.cf-main {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0 49px 0 61px;
+}
+
+.cf-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 17px;
+  min-height: 49px;
+  font-size: 18px;
+}
+
+.cf-header__title {
+  flex: 1;
+}
+
+.cf-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bs-gradient-panel);
+  border-radius: 0 var(--bs-radius-panel) var(--bs-radius-panel) 0;
+}
+
+/* Icon buttons: back (32px, 8px radius) and close (34px circle) */
+.cf-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: var(--bs-color-white);
+  color: var(--bs-color-ink);
+  cursor: pointer;
+}
+
+.cf-back {
+  width: 32px;
+  height: 32px;
+  border: 0.4px solid var(--bs-color-border-strong);
+  border-radius: var(--bs-radius-sm);
+}
+
+.cf-close {
+  position: absolute;
+  top: 19px;
+  right: 13px;
+  width: 34px;
+  height: 34px;
+  border: 0.8px solid var(--bs-color-border-close);
+  border-radius: var(--bs-radius-round);
+  background: transparent;
+}
+
+/* Body + sticky footer */
+.cf-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  /* Bleed into the side gutters so card shadows and focus outlines are not clipped */
+  margin: 0 -24px;
+  padding: 25px 24px 24px;
+}
+
+.cf-step {
+  font-size: 14px;
+  color: var(--bs-color-text-secondary);
+}
+
+.cf-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.cf-title:focus {
+  outline: none;
+}
+
+.cf-subtitle {
+  margin-top: 28px;
+  font-size: 16px;
+  line-height: 28px;
+}
+
+.cf-subtitle p {
+  margin: 0;
+}
+
+.cf-footer {
+  padding: 16px 0 30px;
+  background: var(--bs-color-white);
+}
+
+.cf-footer__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Buttons: 42px, 12px radius, 16px semibold */
+.cf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  padding: 8px 20px;
+  border-radius: var(--bs-radius-button);
+  font: 600 16px/normal var(--bs-font-ui);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.cf-btn--primary {
+  background: var(--bs-color-ink);
+  border: 1px solid var(--bs-color-ink);
+  color: var(--bs-color-white);
+}
+
+.cf-btn--secondary {
+  background: var(--bs-color-white);
+  border: 1px solid var(--bs-color-black);
+  color: var(--bs-color-ink);
+}
+
+.cf-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Visible focus for every interactive element */
+.cf-modal :is(button, textarea, a):focus-visible,
+.cf-choice:has(input:focus-visible),
+.cf-scale__option:has(input:focus-visible) {
+  outline: 2px solid var(--bs-color-ink);
+  outline-offset: 2px;
+}
+
+/* Banner: #FFE9E7, 16px radius, 14/24 */
+.cf-banner {
+  max-width: 580px;
+  margin: 23px 0 0;
+  padding: 10px;
+  border-radius: var(--bs-radius-banner);
+  background: var(--bs-color-banner-bg);
+  color: var(--bs-color-black);
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+}
+
+.cf-footer .cf-error {
+  margin: 0 0 12px;
+}
+
+.cf-note {
+  margin: 16px 0 0;
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--bs-color-text-secondary);
+}
+
+.cf-section-title {
+  margin: 28px 0 8px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* "What You Lose" card (Figma 1:254) */
+.cf-compare {
+  max-width: 592px;
+  margin-top: 24px;
+  padding: 23px 27px;
+  background: var(--bs-color-white);
+  border: 1px solid var(--bs-color-card-border);
+  border-radius: var(--bs-radius-card);
+  box-shadow: var(--bs-shadow-card);
+}
+
+.cf-compare__table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.cf-compare__table th:nth-child(2),
+.cf-compare__table td:nth-child(2) {
+  width: 90px;
+}
+
+.cf-compare__table th:nth-child(3),
+.cf-compare__table td:nth-child(3) {
+  width: 90px;
+  padding-left: 10px;
+}
+
+.cf-compare__table tr {
+  border-bottom: 1px solid var(--bs-color-divider);
+}
+
+.cf-compare__table tbody tr:last-child {
+  border-bottom: 0;
+}
+
+.cf-compare__table thead th {
+  height: 50px;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 0;
+  font: 700 16px/normal var(--bs-font-ui);
+  color: var(--bs-color-ink);
+  vertical-align: middle;
+}
+
+.cf-compare__title {
+  text-align: left;
+}
+
+.cf-compare__plan {
+  text-align: center;
+}
+
+.cf-compare__table tbody th,
+.cf-compare__table tbody td {
+  height: 48px;
+  padding: 0;
+  vertical-align: middle;
+}
+
+.cf-compare__label {
+  font: 400 14px/normal var(--bs-font-table);
+  color: var(--bs-color-ink);
+  text-align: left;
+}
+
+.cf-compare__table tbody td {
+  text-align: center;
+}
+
+.cf-compare__table th:nth-child(2),
+.cf-compare__table td:nth-child(2) {
+  padding-right: 10px;
+}
+
+.cf-compare__value--team {
+  font: 700 14px/normal var(--bs-font-ui);
+  color: var(--bs-color-ink);
+}
+
+.cf-compare__value--free {
+  font: 400 13.5px/normal var(--bs-font-ui);
+  color: var(--bs-color-text-secondary);
+}
+
+.cf-compare__cross {
+  font: 400 13.5px/normal var(--bs-font-symbol);
+  color: var(--bs-color-text-secondary);
+}
+
+.cf-check {
+  display: inline-block;
+  vertical-align: middle;
+  color: var(--bs-color-accent);
+}
+
+/* Offer card shares the comparison card shell */
+.cf-offer {
+  max-width: 592px;
+  margin-top: 24px;
+  padding: 23px 27px;
+  border: 1px solid var(--bs-color-card-border);
+  border-radius: var(--bs-radius-card);
+  box-shadow: var(--bs-shadow-card);
+  background: var(--bs-color-white);
+}
+
+.cf-offer__eyebrow {
+  margin: 0;
+  font-size: 14px;
+  color: var(--bs-color-text-secondary);
+}
+
+.cf-offer__title {
+  margin: 4px 0 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.cf-offer__price {
+  margin: 8px 0 0;
+  font-size: 16px;
+  line-height: 28px;
+}
+
+/* Usage counts: same 48px divided rows as the comparison card */
+.cf-usage {
+  max-width: 592px;
+}
+
+.cf-usage__list {
+  margin: 0;
+}
+
+.cf-usage__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  border-bottom: 1px solid var(--bs-color-divider);
+  font: 400 14px/normal var(--bs-font-table);
+}
+
+.cf-usage__row dd {
+  margin: 0;
+  font: 700 14px/normal var(--bs-font-ui);
+}
+
+/* Option cards (pause / lower plans) */
+.cf-options {
+  display: grid;
+  gap: 12px;
+  max-width: 592px;
+  margin-top: 24px;
+}
+
+.cf-section-title + .cf-options {
+  margin-top: 0;
+}
+
+.cf-option {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  padding: 16px 44px 16px 16px;
+  background: var(--bs-color-white);
+  border: 1px solid var(--bs-color-divider);
+  border-radius: var(--bs-radius-button);
+  color: var(--bs-color-ink);
+  font-family: var(--bs-font-ui);
+  text-align: left;
+  cursor: pointer;
+}
+
+.cf-option:hover {
+  border-color: var(--bs-color-ink);
+}
+
+.cf-option__title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.cf-option__desc {
+  font-size: 14px;
+  color: var(--bs-color-text-secondary);
+}
+
+.cf-option__chevron {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  font-size: 22px;
+}
+
+/* Form controls */
+.cf-survey {
+  max-width: 592px;
+}
+
+.cf-fieldset {
+  margin: 28px 0 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.cf-question {
+  display: block;
+  margin-bottom: 12px;
+  padding: 0;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.cf-field-error {
+  margin: -4px 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cf-choices {
+  display: grid;
+  gap: 8px;
+}
+
+.cf-choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid var(--bs-color-divider);
+  border-radius: var(--bs-radius-sm);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cf-choice:has(input:checked) {
+  border-color: var(--bs-color-ink);
+  background: var(--bs-color-banner-bg);
+}
+
+.cf-choice input {
+  margin: 0;
+  accent-color: var(--bs-color-ink);
+}
+
+.cf-choice--plan .cf-choice__name {
+  font-weight: 600;
+}
+
+.cf-choice--plan .cf-choice__price {
+  margin-left: auto;
+}
+
+.cf-segments {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.cf-scale {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cf-scale__end {
+  font-size: 14px;
+  color: var(--bs-color-text-secondary);
+}
+
+.cf-scale__options {
+  display: flex;
+  gap: 8px;
+}
+
+.cf-scale__option {
+  position: relative;
+  border-radius: var(--bs-radius-sm);
+}
+
+.cf-scale__option input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.cf-scale__option span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 36px;
+  border: 1px solid var(--bs-color-divider);
+  border-radius: var(--bs-radius-sm);
+  font-size: 14px;
+}
+
+.cf-scale__option input:checked + span {
+  background: var(--bs-color-ink);
+  border-color: var(--bs-color-ink);
+  color: var(--bs-color-white);
+}
+
+.cf-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  border: 1px solid var(--bs-color-divider);
+  border-radius: var(--bs-radius-sm);
+  font: 400 14px/1.5 var(--bs-font-ui);
+  color: var(--bs-color-ink);
+  resize: vertical;
+}
+
+.cf-textarea::placeholder {
+  color: var(--bs-color-text-secondary);
+}
+
+/* Compact Team vs lower plan table */
+.cf-mini-compare__title {
+  margin: 28px 0 4px;
+}
+
+.cf-mini-compare {
+  width: 100%;
+  max-width: 592px;
+  border-collapse: collapse;
+  font: 400 14px/normal var(--bs-font-table);
+}
+
+.cf-mini-compare tr {
+  border-bottom: 1px solid var(--bs-color-divider);
+}
+
+.cf-mini-compare th,
+.cf-mini-compare td {
+  height: 40px;
+  padding: 0 8px 0 0;
+  text-align: left;
+  font-weight: 400;
+}
+
+.cf-mini-compare thead th {
+  font: 700 14px/normal var(--bs-font-ui);
+}
+
+/* Cancelled timeline */
+.cf-timeline {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 592px;
+}
+
+.cf-timeline li {
+  display: grid;
+  gap: 2px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--bs-color-divider);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.cf-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Below tablet width: single column, panel hidden */
+@media (max-width: 900px) {
+  .cf-overlay {
+    padding: 0;
+  }
+
+  .cf-modal {
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+
+  .cf-panel {
+    display: none;
+  }
+
+  .cf-main {
+    padding: 0 16px;
+  }
+
+  .cf-body {
+    margin: 0 -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .cf-header {
+    padding-right: 48px;
+  }
+
+  .cf-close {
+    top: 16px;
+    right: 16px;
+  }
+
+  .cf-compare,
+  .cf-offer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .cf-compare__table th:nth-child(2),
+  .cf-compare__table td:nth-child(2),
+  .cf-compare__table th:nth-child(3),
+  .cf-compare__table td:nth-child(3) {
+    width: 72px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cf-btn,
+  .cf-option,
+  .cf-choice {
+    transition: border-color 120ms ease, background-color 120ms ease;
+  }
+}

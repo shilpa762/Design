@@ -1,0 +1,24 @@
+body {
+  margin: 0;
+  background: var(--bs-color-white);
+  color: var(--bs-color-ink);
+  font-family: var(--bs-font-ui);
+}
+
+.demo {
+  display: grid;
+  justify-items: start;
+  gap: 16px;
+  padding: 32px 16px;
+}
+
+.demo h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.demo__toggle {
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+}
